@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Ghibli Anime Meadow & Doge - Three.js Shaders</title>
+  <meta name="description" content="Studio Ghibli & Ni no Kuni style Three.js shaders with an animated Doge, watermill cottage, and pleasant meadow wind." />
+  <meta name="theme-color" content="#4288ce" />
+
+  <!--
+    Hosted at https://xyzzyapps.github.io/ghibli-threejs-shaders/
+    X reads these tags and, on desktop, loads the page in the timeline as a Player Card.
+    Do not add X-Frame-Options or a CSP frame-ancestors rule that blocks x.com.
+  -->
+  <meta name="twitter:card" content="player" />
+  <meta name="twitter:title" content="Ghibli Meadow & Doge" />
+  <meta name="twitter:description" content="Studio Ghibli & Ni no Kuni style Three.js shaders with an animated Doge, watermill cottage, and pleasant meadow wind." />
+  <meta name="twitter:image" content="https://xyzzyapps.github.io/ghibli-threejs-shaders/preview.jpg" />
+  <meta name="twitter:image:alt" content="Studio Ghibli style landscape with watermill cottage, grass, and running Doge." />
+  <meta name="twitter:player" content="https://xyzzyapps.github.io/ghibli-threejs-shaders/" />
+  <meta name="twitter:player:width" content="1280" />
+  <meta name="twitter:player:height" content="720" />
+  <meta property="og:title" content="Ghibli Meadow & Doge" />
+  <meta property="og:description" content="Studio Ghibli & Ni no Kuni style Three.js shaders with an animated Doge, watermill cottage, and pleasant meadow wind." />
+  <meta property="og:image" content="https://xyzzyapps.github.io/ghibli-threejs-shaders/preview.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="675" />
+  <meta property="og:url" content="https://xyzzyapps.github.io/ghibli-threejs-shaders/" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%234288ce'/%3E%3Cpath d='M32 12l14 20-14 20-14-20z' fill='%23c7ea3b'/%3E%3C/svg%3E" />
+  <script type="module" crossorigin src="./assets/index-CGt-vCS9.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DKd5ZUe1.css">
+</head>
+<body class="ui-hidden">
+  <div id="canvas-container"></div>
+
+  <div id="ui-overlay">
+    <div class="title-card">
+      <h1>Ghibli World & Doge <span class="badge">Animation</span></h1>
+      <p>Real-time Three.js shaders & animations replicating Studio Ghibli & Ni no Kuni landscapes with an animated Doge (Shiba Inu) and watermill cottage.</p>
+      
+      <div class="features-list">
+        <span>🐕 Animated Doge (Walk, Gallop, Sniff)</span>
+        <span>🏡 Ghibli Watermill Cottage & Smoke</span>
+        <span>🌾 160,000+ Curved Grass Blades</span>
+        <span>🌤️ Procedural Gouache Cumulus Cloud Sky</span>
+        <span>🍃 48kHz Seamless Stereo Wind Ambience</span>
+      </div>
+
+      <div class="preset-buttons">
+        <button class="btn-preset active" data-preset="sunny">Sunny Meadow</button>
+        <button class="btn-preset" data-preset="sunset">Golden Sunset</button>
+        <button class="btn-preset" data-preset="overcast">Overcast Day</button>
+        <button class="btn-preset" data-preset="night">Totoro Night</button>
+      </div>
+
+      <div id="stats-info">
+        <span id="fps-counter">60 FPS • Animated Doge</span>
+        <span>Left Drag: Orbit • Scroll: Zoom • Right Drag: Pan • H: Toggle UI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Floating Audio Controls -->
+  <div id="audio-panel">
+    <button id="btn-audio-toggle" class="audio-btn" title="Toggle Wind Sound [M]">
+      <span id="audio-icon">🔊</span>
+    </button>
+    <div class="audio-controls">
+      <div class="audio-info">
+        <span class="audio-title">🍃 Meadow Wind</span>
+        <span id="audio-vol-text">55%</span>
+      </div>
+      <input type="range" id="audio-volume" min="0" max="1" step="0.02" value="0.55" title="Volume">
+    </div>
+  </div>
+
+  <div id="doge-hud">
+    <div class="hud-panel">
+      <div class="hud-title">
+        <span>🎮 Doge Controls</span>
+        <span style="font-size: 10px; opacity: 0.7;">WASD / Click to Play</span>
+      </div>
+      <div class="hud-layout">
+        <!-- D-Pad -->
+        <div class="dpad-grid">
+          <button class="control-btn btn-w" data-action="forward">W</button>
+          <button class="control-btn btn-a" data-action="left">A</button>
+          <button class="control-btn btn-s" data-action="backward">S</button>
+          <button class="control-btn btn-d" data-action="right">D</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-column">
+          <div class="action-row">
+            <button class="action-btn" id="btn-sprint" data-action="sprint">⚡ Sprint <span class="key-hint">[Shift]</span></button>
+            <button class="action-btn" id="btn-jump">🦘 Jump <span class="key-hint">[Space]</span></button>
+            <button class="action-btn active" id="btn-oil">🎨 Style: Anime Cel</button>
+          </div>
+          <div class="action-row">
+            <button class="action-btn" id="btn-sniff">🌸 Sniff <span class="key-hint">[E]</span></button>
+            <button class="action-btn active" id="btn-mode">🤖 Auto-Roam</button>
+            <button class="action-btn" id="btn-cam">🎥 Doge Cam</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

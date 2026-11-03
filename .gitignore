@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Production build outputs & raw recording dumps
+dist/
+
+# Temporary downloaded root models
+shiba.glb
+shiba_animated.glb
+
+# System & Editor files
+.DS_Store
+Thumbs.db
+*.log
+.env
+.env.local
