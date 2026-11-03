@@ -29,35 +29,39 @@
   <meta property="og:type" content="website" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%234288ce'/%3E%3Cpath d='M32 12l14 20-14 20-14-20z' fill='%23c7ea3b'/%3E%3C/svg%3E" />
-  <script type="module" crossorigin src="./assets/index-B6uGfHPh.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DKd5ZUe1.css">
+  <script type="module" crossorigin src="./assets/index-9FRTt2y1.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-l4Cs-dR0.css">
 </head>
 <body class="ui-hidden">
   <div id="canvas-container"></div>
 
+  <!-- Persistent subtle UI toggle button in corner for easy touch access -->
+  <button id="btn-toggle-ui" title="Toggle Menus [H]">👁️ UI</button>
+
   <div id="ui-overlay">
     <div class="title-card">
-      <h1>Doge World <span class="badge">Animation</span></h1>
-      <p>Real-time Three.js shaders & animations replicating Studio Ghibli & Ni no Kuni landscapes with an animated Doge (Shiba Inu) and watermill cottage.</p>
+      <div class="title-header">
+        <h1>Doge World <span class="badge">Animation</span></h1>
+      </div>
+      <p class="title-desc">Real-time Three.js shaders & animations replicating Studio Ghibli & Ni no Kuni landscapes with an animated Doge (Shiba Inu) and watermill cottage.</p>
       
       <div class="features-list">
-        <span>🐕 Animated Doge (Walk, Gallop, Sniff)</span>
-        <span>🏡 Ghibli Watermill Cottage & Smoke</span>
-        <span>🌾 160,000+ Curved Grass Blades</span>
-        <span>🌤️ Procedural Gouache Cumulus Cloud Sky</span>
-        <span>🍃 48kHz Seamless Stereo Wind Ambience</span>
+        <span>🐕 Animated Doge</span>
+        <span>🏡 Ghibli Watermill</span>
+        <span>🌾 160k Grass Blades</span>
+        <span>🌤️ Gouache Clouds</span>
       </div>
 
       <div class="preset-buttons">
-        <button class="btn-preset active" data-preset="sunny">Sunny Meadow</button>
-        <button class="btn-preset" data-preset="sunset">Golden Sunset</button>
-        <button class="btn-preset" data-preset="overcast">Overcast Day</button>
-        <button class="btn-preset" data-preset="night">Totoro Night</button>
+        <button class="btn-preset active" data-preset="sunny">Sunny</button>
+        <button class="btn-preset" data-preset="sunset">Sunset</button>
+        <button class="btn-preset" data-preset="overcast">Overcast</button>
+        <button class="btn-preset" data-preset="night">Night</button>
       </div>
 
       <div id="stats-info">
-        <span id="fps-counter">60 FPS • Doge World</span>
-        <span>Left Drag: Orbit • Scroll: Zoom • Right Drag: Pan • H: Toggle UI</span>
+        <span id="fps-counter">60 FPS</span>
+        <span class="hints">Drag: Orbit • Scroll: Zoom • H: UI</span>
       </div>
     </div>
   </div>
@@ -69,7 +73,7 @@
     </button>
     <div class="audio-controls">
       <div class="audio-info">
-        <span class="audio-title">🍃 Meadow Wind</span>
+        <span class="audio-title">🍃 Wind</span>
         <span id="audio-vol-text">70%</span>
       </div>
       <input type="range" id="audio-volume" min="0" max="1" step="0.02" value="0.70" title="Volume">
@@ -79,8 +83,8 @@
   <div id="doge-hud">
     <div class="hud-panel">
       <div class="hud-title">
-        <span>🎮 Doge Controls</span>
-        <span style="font-size: 10px; opacity: 0.7;">WASD / Click to Play</span>
+        <span>🎮 Controls</span>
+        <span class="hud-subtitle">WASD / Tap</span>
       </div>
       <div class="hud-layout">
         <!-- D-Pad -->
@@ -94,14 +98,14 @@
         <!-- Action Buttons -->
         <div class="actions-column">
           <div class="action-row">
-            <button class="action-btn" id="btn-sprint" data-action="sprint">⚡ Sprint <span class="key-hint">[Shift]</span></button>
+            <button class="action-btn" id="btn-sprint" data-action="sprint">⚡ Run <span class="key-hint">[Shift]</span></button>
             <button class="action-btn" id="btn-jump">🦘 Jump <span class="key-hint">[Space]</span></button>
-            <button class="action-btn active" id="btn-oil">🎨 Style: Anime Cel</button>
+            <button class="action-btn active" id="btn-oil">🎨 Style: Cel</button>
           </div>
           <div class="action-row">
             <button class="action-btn" id="btn-sniff">🌸 Sniff <span class="key-hint">[E]</span></button>
-            <button class="action-btn active" id="btn-mode">🤖 Auto-Roam</button>
-            <button class="action-btn" id="btn-cam">🎥 Doge Cam</button>
+            <button class="action-btn active" id="btn-mode">🤖 Roam</button>
+            <button class="action-btn" id="btn-cam">🎥 Cam</button>
           </div>
         </div>
       </div>
