@@ -503,7 +503,7 @@ if (btnOil) {
 }
 
 // --- Lil-GUI Setup ---
-const gui = new GUI({ title: '🎨 Ghibli Scene Controls', width: 330 });
+const gui = new GUI({ title: '🐕 Doge World Controls', width: 330 });
 
 // 0. Fine-Art Painting Style Folder
 const artFolder = gui.addFolder('🎨 Painting Style Shaders');
@@ -663,7 +663,7 @@ function animate() {
   const now = performance.now();
   if (now - lastFpsTime >= 1000) {
     const fps = Math.round((frameCount * 1000) / (now - lastFpsTime));
-    fpsEl.textContent = `${fps} FPS • Pure Ghibli Sky & Meadow`;
+    fpsEl.textContent = `${fps} FPS • Doge World`;
     frameCount = 0;
     lastFpsTime = now;
   }

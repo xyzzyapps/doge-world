@@ -1,7 +1,7 @@
 {
-  "name": "ghibli-threejs-shaders",
+  "name": "doge-world",
   "version": "1.0.0",
-  "description": "Studio Ghibli & Ni no Kuni style Three.js custom shaders featuring anime grass, gouache cumulus sky, animated Doge character, watermill cottage, and pleasant meadow wind audio.",
+  "description": "Doge World - Studio Ghibli & Ni no Kuni style Three.js custom shaders featuring anime grass, gouache cumulus sky, animated Doge character, watermill cottage, and pleasant meadow wind audio.",
   "main": "index.html",
   "type": "module",
   "scripts": {
