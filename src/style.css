@@ -20,6 +20,89 @@ body.ui-hidden .lil-gui {
   display: none !important;
 }
 
+/* Dedicated Glassmorphic Audio Panel */
+#audio-panel {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 40px;
+  padding: 8px 18px 8px 10px;
+  box-shadow: 0 8px 24px rgba(28, 48, 64, 0.16);
+  transition: opacity 0.25s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+body.ui-hidden #audio-panel {
+  opacity: 0.45;
+}
+body.ui-hidden #audio-panel:hover {
+  opacity: 1.0;
+  transform: translateY(-2px);
+}
+
+.audio-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: #3b7e4f;
+  color: white;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.2s ease;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(59, 126, 79, 0.3);
+}
+.audio-btn:hover {
+  transform: scale(1.08);
+  background: #2e663e;
+}
+.audio-btn.muted {
+  background: #7a8a82;
+  box-shadow: none;
+}
+
+.audio-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 115px;
+}
+
+.audio-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #244131;
+}
+
+#audio-vol-text {
+  font-size: 10px;
+  color: #5c7568;
+  font-weight: 600;
+}
+
+#audio-volume {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  accent-color: #3b7e4f;
+  cursor: pointer;
+}
+
 #btn-toggle-ui {
   position: absolute;
   top: 16px;

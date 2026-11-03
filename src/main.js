@@ -94,8 +94,26 @@ scene.add(house.group);
 // 7. Animated Doge Shiba Inu Character (WASD controllable + auto-roam)
 const doge = createDogeController(scene);
 
-// Camera Following Doge State (disabled by default for panoramic scenic view)
+// Camera Following Doge State
 let isFollowingDoge = false;
+
+function setFollowDogeMode(enabled) {
+  isFollowingDoge = enabled;
+  if (btnCam) btnCam.classList.toggle('active', enabled);
+  if (isFollowingDoge) {
+    // Initial placement behind the dog, respecting user's current zoom distance or defaulting to 6.5
+    const dogPos = doge.group.position;
+    const currentDist = Math.max(3.5, camera.position.distanceTo(controls.target));
+    const dist = currentDist || 6.5;
+    controls.target.set(dogPos.x, dogPos.y + 0.85, dogPos.z);
+    camera.position.set(
+      dogPos.x - Math.sin(doge.state.heading) * dist,
+      dogPos.y + 0.85 + Math.max(1.8, dist * 0.35),
+      dogPos.z - Math.cos(doge.state.heading) * dist
+    );
+    controls.update();
+  }
+}
 
 // Default: Hide all UI overlays for clean cinematic view (Press 'H' to toggle)
 document.body.classList.add('ui-hidden');
@@ -104,23 +122,132 @@ window.addEventListener('keydown', (e) => {
     document.body.classList.toggle('ui-hidden');
   }
   if (e.code === 'KeyM') {
-    if (windAudio) {
-      windAudio.paused ? windAudio.play() : windAudio.pause();
-    }
+    toggleAudio();
   }
 });
 
-// Ambient Pleasant Meadow Wind Audio
-const windAudio = document.getElementById('bg-wind-audio');
-if (windAudio) {
-  windAudio.volume = 0.55;
-  const startAudio = () => {
-    windAudio.play().catch(() => {});
-    window.removeEventListener('click', startAudio);
-    window.removeEventListener('keydown', startAudio);
-  };
-  window.addEventListener('click', startAudio);
-  window.addEventListener('keydown', startAudio);
+// --- Web Audio API: Sample-Accurate Gapless Looper & Controls ---
+let audioCtx = null;
+let gainNode = null;
+let windSource = null;
+let windBuffer = null;
+let isAudioPlaying = false;
+let currentVolume = 0.55;
+
+const btnAudioToggle = document.getElementById('btn-audio-toggle');
+const audioIcon = document.getElementById('audio-icon');
+const audioVolumeSlider = document.getElementById('audio-volume');
+const audioVolText = document.getElementById('audio-vol-text');
+
+function initWebAudio() {
+  if (audioCtx) return;
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  audioCtx = new AudioContext();
+  gainNode = audioCtx.createGain();
+  gainNode.gain.value = currentVolume;
+  gainNode.connect(audioCtx.destination);
+
+  fetch('./audio/pleasant_wind.wav')
+    .then(res => res.arrayBuffer())
+    .then(buf => audioCtx.decodeAudioData(buf))
+    .then(decoded => {
+      windBuffer = decoded;
+      if (isAudioPlaying) {
+        startGaplessPlayback();
+      }
+    })
+    .catch(err => console.warn('Could not load wind audio:', err));
+}
+
+function startGaplessPlayback() {
+  if (!audioCtx || !windBuffer) return;
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  if (windSource) {
+    try { windSource.stop(); } catch (e) {}
+    windSource.disconnect();
+  }
+  windSource = audioCtx.createBufferSource();
+  windSource.buffer = windBuffer;
+  windSource.loop = true; // Web Audio API sample-accurate hardware gapless loop!
+  windSource.connect(gainNode);
+  windSource.start(0);
+  isAudioPlaying = true;
+  updateAudioUI();
+}
+
+function stopGaplessPlayback() {
+  if (windSource) {
+    try { windSource.stop(); } catch (e) {}
+    windSource.disconnect();
+    windSource = null;
+  }
+  isAudioPlaying = false;
+  updateAudioUI();
+}
+
+function toggleAudio() {
+  if (!audioCtx) initWebAudio();
+  if (isAudioPlaying) {
+    stopGaplessPlayback();
+  } else {
+    isAudioPlaying = true;
+    startGaplessPlayback();
+  }
+}
+
+function setAudioVolume(val) {
+  currentVolume = Math.max(0, Math.min(1, val));
+  if (gainNode && audioCtx) {
+    gainNode.gain.setTargetAtTime(currentVolume, audioCtx.currentTime, 0.05);
+  }
+  updateAudioUI();
+}
+
+function updateAudioUI() {
+  if (btnAudioToggle) {
+    btnAudioToggle.classList.toggle('muted', !isAudioPlaying);
+  }
+  if (audioIcon) {
+    audioIcon.textContent = isAudioPlaying ? '🔊' : '🔇';
+  }
+  if (audioVolumeSlider) {
+    audioVolumeSlider.value = currentVolume;
+  }
+  if (audioVolText) {
+    audioVolText.textContent = isAudioPlaying ? `${Math.round(currentVolume * 100)}%` : 'Muted';
+  }
+}
+
+// User-gesture auto-unlock for Web Audio policy
+const unlockAudio = () => {
+  if (!audioCtx) initWebAudio();
+  if (!isAudioPlaying && windBuffer) {
+    startGaplessPlayback();
+  }
+  window.removeEventListener('click', unlockAudio);
+  window.removeEventListener('keydown', unlockAudio);
+};
+window.addEventListener('click', unlockAudio);
+window.addEventListener('keydown', unlockAudio);
+
+if (btnAudioToggle) {
+  btnAudioToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleAudio();
+  });
+}
+
+if (audioVolumeSlider) {
+  audioVolumeSlider.addEventListener('input', (e) => {
+    e.stopPropagation();
+    setAudioVolume(parseFloat(e.target.value));
+    if (!isAudioPlaying) {
+      isAudioPlaying = true;
+      startGaplessPlayback();
+    }
+  });
 }
 
 // --- Uniform Synchronization Helper ---
@@ -356,8 +483,7 @@ const btnCam = document.getElementById('btn-cam');
 if (btnCam) {
   btnCam.classList.remove('active');
   btnCam.addEventListener('click', () => {
-    isFollowingDoge = !isFollowingDoge;
-    btnCam.classList.toggle('active', isFollowingDoge);
+    setFollowDogeMode(!isFollowingDoge);
   });
 }
 
@@ -450,24 +576,20 @@ windFolder.add(grass.uniforms.uWindWaveFreq, 'value', 0.02, 0.25, 0.01).name('Wa
 const camFolder = gui.addFolder('🎥 Camera Views');
 const cameraPresets = {
   followDoge: () => {
-    isFollowingDoge = true;
-    if (btnCam) btnCam.classList.add('active');
+    setFollowDogeMode(true);
   },
   skyAndMeadow: () => {
-    isFollowingDoge = false;
-    if (btnCam) btnCam.classList.remove('active');
+    setFollowDogeMode(false);
     controls.target.set(0, 10.0, -30);
     camera.position.set(-1.5, 4.0, 16.0);
   },
   cottageView: () => {
-    isFollowingDoge = false;
-    if (btnCam) btnCam.classList.remove('active');
+    setFollowDogeMode(false);
     controls.target.set(-7, 3.5, -22);
     camera.position.set(-1.5, 5.0, -10.0);
   },
   panorama: () => {
-    isFollowingDoge = false;
-    if (btnCam) btnCam.classList.remove('active');
+    setFollowDogeMode(false);
     controls.target.set(5, 8, -25);
     camera.position.set(-25, 14, 40);
   }
@@ -520,17 +642,15 @@ function animate() {
   // Keep sky dome centered on camera to maintain seamless infinite horizon
   sky.mesh.position.copy(camera.position);
 
-  // Smooth Third-Person Camera Tracking behind Doge
+  // Camera Tracking behind Doge (follows dog while preserving user zoom and orbit adjustments!)
   if (isFollowingDoge) {
     const dogPos = doge.group.position;
-    controls.target.lerp(new THREE.Vector3(dogPos.x, dogPos.y + 0.85, dogPos.z), 0.12);
-
-    const camDist = 5.2;
-    const camHeight = 2.4;
-    const targetCamX = dogPos.x - Math.sin(doge.state.heading) * camDist;
-    const targetCamZ = dogPos.z - Math.cos(doge.state.heading) * camDist;
-    const targetCamY = dogPos.y + camHeight;
-    camera.position.lerp(new THREE.Vector3(targetCamX, targetCamY, targetCamZ), 0.08);
+    const targetPos = new THREE.Vector3(dogPos.x, dogPos.y + 0.85, dogPos.z);
+    // Smoothly shift both target and camera position together by follow delta
+    const followDelta = new THREE.Vector3().subVectors(targetPos, controls.target);
+    const followStep = followDelta.multiplyScalar(0.15);
+    controls.target.add(followStep);
+    camera.position.add(followStep);
   }
 
   controls.update();
