@@ -115,7 +115,7 @@ function setFollowDogeMode(enabled) {
   }
 }
 
-// Default: Hide all UI overlays for clean cinematic view (Press 'H' to toggle)
+// Default: Hide all UI overlays for clean cinematic view (Press 'H' or tap 'UI' to toggle)
 document.body.classList.add('ui-hidden');
 window.addEventListener('keydown', (e) => {
   if (e.code === 'KeyH') {
@@ -125,6 +125,14 @@ window.addEventListener('keydown', (e) => {
     toggleAudio();
   }
 });
+
+const btnToggleUI = document.getElementById('btn-toggle-ui');
+if (btnToggleUI) {
+  btnToggleUI.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.body.classList.toggle('ui-hidden');
+  });
+}
 
 // --- Web Audio API: Sample-Accurate Gapless Looper & Controls ---
 let audioCtx = null;
@@ -502,8 +510,16 @@ if (btnOil) {
   });
 }
 
-// --- Lil-GUI Setup ---
-const gui = new GUI({ title: '🐕 Doge World Controls', width: 330 });
+// --- Lil-GUI Setup (Responsive width & auto-close in small viewports/iframes) ---
+const isCompact = window.innerWidth < 640 || window.innerHeight < 460;
+const gui = new GUI({
+  title: '🐕 Doge World Controls',
+  width: isCompact ? 210 : 310,
+  closeFolders: isCompact
+});
+if (isCompact) {
+  gui.close();
+}
 
 // 0. Fine-Art Painting Style Folder
 const artFolder = gui.addFolder('🎨 Painting Style Shaders');
