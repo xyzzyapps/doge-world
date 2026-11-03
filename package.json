@@ -1,0 +1,22 @@
+{
+  "name": "ghibli-threejs-shaders",
+  "version": "1.0.0",
+  "description": "Studio Ghibli & Ni no Kuni style Three.js custom shaders featuring anime grass, gouache cumulus sky, animated Doge character, watermill cottage, and pleasant meadow wind audio.",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "Xyzzy Apps <xyzzyapps@gmail.com>",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "dependencies": {
+    "lil-gui": "^0.21.0",
+    "three": "^0.187.0",
+    "vite": "^8.3.5"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^25.16.0"
+  }
+}

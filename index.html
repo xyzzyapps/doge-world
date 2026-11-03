@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghibli Anime Meadow & Sky - Three.js Custom Shaders</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div id="canvas-container"></div>
+
+  <div id="ui-overlay">
+    <div class="title-card">
+      <h1>Ghibli World & Doge <span class="badge">Animation</span></h1>
+      <p>Real-time Three.js shaders & animations replicating Studio Ghibli & Ni no Kuni landscapes with an animated Doge (Shiba Inu) and watermill cottage.</p>
+      
+      <div class="features-list">
+        <span>🐕 Animated Doge (Walk, Gallop, Sniff)</span>
+        <span>🏡 Ghibli Watermill Cottage & Smoke</span>
+        <span>🌾 140,000+ Curved Grass Blades</span>
+        <span>🌤️ Procedural Cumulus Cloud Sky</span>
+        <span>🌊 Blue Pond & Winding Dirt Path</span>
+        <span>🏔️ Alpine Mountains & Forest Tree</span>
+      </div>
+
+      <div class="preset-buttons">
+        <button class="btn-preset active" data-preset="sunny">Sunny Meadow</button>
+        <button class="btn-preset" data-preset="sunset">Golden Sunset</button>
+        <button class="btn-preset" data-preset="overcast">Overcast Day</button>
+        <button class="btn-preset" data-preset="night">Totoro Night</button>
+      </div>
+
+      <div id="stats-info">
+        <span id="fps-counter">60 FPS • Animated Doge</span>
+        <span>Left Drag: Orbit • Scroll: Zoom • Right Drag: Pan</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="doge-hud">
+    <div class="hud-panel">
+      <div class="hud-title">
+        <span>🎮 Doge Controls</span>
+        <span style="font-size: 10px; opacity: 0.7;">WASD / Click to Play</span>
+      </div>
+      <div class="hud-layout">
+        <!-- D-Pad -->
+        <div class="dpad-grid">
+          <button class="control-btn btn-w" data-action="forward">W</button>
+          <button class="control-btn btn-a" data-action="left">A</button>
+          <button class="control-btn btn-s" data-action="backward">S</button>
+          <button class="control-btn btn-d" data-action="right">D</button>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions-column">
+          <div class="action-row">
+            <button class="action-btn" id="btn-sprint" data-action="sprint">⚡ Sprint <span class="key-hint">[Shift]</span></button>
+            <button class="action-btn" id="btn-jump">🦘 Jump <span class="key-hint">[Space]</span></button>
+            <button class="action-btn active" id="btn-oil">🎨 Oil Paint: ON</button>
+          </div>
+          <div class="action-row">
+            <button class="action-btn" id="btn-sniff">🌸 Sniff <span class="key-hint">[E]</span></button>
+            <button class="action-btn" id="btn-mode">🤖 Auto-Roam</button>
+            <button class="action-btn active" id="btn-cam">🎥 Doge Cam</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bg-wind-audio" src="./audio/pleasant_wind.wav" loop preload="auto"></audio>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

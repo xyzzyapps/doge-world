@@ -1,0 +1,313 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #1a2228;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body.ui-hidden #ui-overlay,
+body.ui-hidden #doge-hud,
+body.ui-hidden .lil-gui {
+  display: none !important;
+}
+
+#btn-toggle-ui {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 99;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2e4d3b;
+  cursor: pointer;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+#btn-toggle-ui:hover {
+  opacity: 1.0;
+}
+
+#canvas-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#ui-overlay {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 10;
+  pointer-events: none;
+  max-width: 440px;
+}
+
+.title-card {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 18px 22px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(28, 48, 64, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.title-card h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #233930;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-card h1 .badge {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  background: #4caf50;
+  color: white;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.title-card p {
+  font-size: 13px;
+  color: #52675d;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  margin-bottom: 14px;
+  font-size: 11.5px;
+  color: #3b5247;
+}
+
+.features-list span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.features-list span::before {
+  content: "•";
+  color: #5c9e42;
+  font-weight: bold;
+}
+
+.preset-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-preset {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #f0f6ee;
+  color: #2e4d3b;
+  border: 1px solid #d4e2d0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-preset:hover {
+  background: #e2efde;
+  border-color: #8bb77a;
+  transform: translateY(-1px);
+}
+
+.btn-preset.active {
+  background: #45883d;
+  color: white;
+  border-color: #386f32;
+  box-shadow: 0 2px 8px rgba(69, 136, 61, 0.3);
+}
+
+#stats-info {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #7d968b;
+  display: flex;
+  justify-content: space-between;
+}
+
+#instructions {
+  display: none;
+}
+
+/* Doge Controls HUD */
+#doge-hud {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  pointer-events: auto;
+}
+
+.hud-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 14px 18px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(28, 48, 64, 0.15), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hud-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #3b5c47;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hud-layout {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dpad-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 38px);
+  grid-template-rows: repeat(2, 38px);
+  gap: 6px;
+}
+
+.control-btn {
+  background: #f4f8f2;
+  border: 1px solid #d0e0cd;
+  color: #274735;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.12s ease;
+  user-select: none;
+}
+
+.control-btn:hover {
+  background: #e6f2e2;
+  border-color: #8bb77a;
+  transform: translateY(-1px);
+}
+
+.control-btn.active, .control-btn:active {
+  background: #4caf50;
+  color: white;
+  border-color: #3b8e3e;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+.btn-w { grid-column: 2; grid-row: 1; }
+.btn-a { grid-column: 1; grid-row: 2; }
+.btn-s { grid-column: 2; grid-row: 2; }
+.btn-d { grid-column: 3; grid-row: 2; }
+
+.actions-column {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.action-row {
+  display: flex;
+  gap: 6px;
+}
+
+.action-btn {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 8px;
+  background: #f0f7ee;
+  border: 1px solid #c9dec6;
+  color: #284c36;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.action-btn:hover {
+  background: #e2f0df;
+  border-color: #79af65;
+}
+
+.action-btn.active, .action-btn:active {
+  background: #43883b;
+  color: white;
+}
+
+.key-hint {
+  font-size: 10px;
+  opacity: 0.65;
+  margin-left: 4px;
+  font-weight: normal;
+}
+
+/* lil-gui custom styling to blend gracefully */
+.lil-gui {
+  --background-color: rgba(255, 255, 255, 0.9) !important;
+  --text-color: #2b3e36 !important;
+  --title-background-color: #f3f8f3 !important;
+  --widget-color: #e5efe3 !important;
+  --hover-color: #d8e8d5 !important;
+  --focus-color: #5c9e42 !important;
+  --number-color: #267232 !important;
+  --string-color: #8c5224 !important;
+  font-family: inherit !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  overflow: hidden;
+}
+
+.lil-gui .title {
+  font-weight: 700 !important;
+  color: #1f362c !important;
+}
