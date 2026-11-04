@@ -77,5 +77,7 @@ export function createAirSpores(count = 600) {
   });
 
   const points = new THREE.Points(geometry, material);
+  points.frustumCulled = false;
+  geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 100);
   return { points, uniforms };
 }

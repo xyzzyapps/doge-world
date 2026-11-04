@@ -33,6 +33,7 @@ export function createSkyDome() {
   });
 
   const mesh = new THREE.Mesh(geometry, material);
+  mesh.frustumCulled = false;
 
   return { mesh, material, uniforms };
 }

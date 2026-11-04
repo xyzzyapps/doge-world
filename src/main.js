@@ -81,7 +81,7 @@ const sky = createSkyDome();
 scene.add(sky.mesh);
 
 // 4. Stylized Wildflowers (Pink cosmos, daisies, buttercups scattered in grass)
-const flowers = createWildflowers(2200, 62);
+const flowers = createWildflowers(2800, 65);
 scene.add(flowers.mesh);
 
 // 5. Air Spores (disabled in cel mode to keep ink lines pristine)
